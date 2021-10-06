@@ -1,0 +1,47 @@
+[tool.poetry]
+name = "the-eye"
+version = "0.1.0"
+description = "Logs service"
+authors = ["Jonatas Oliveira <contact@jonatasoliveira.dev>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Flask = "^2.0.2"
+SQLAlchemy = "^1.4.25"
+asyncpg = "^0.24.0"
+Flask-Migrate = "^3.1.0"
+psycopg2-binary = "^2.9.1"
+flask-restplus = "^0.13.0"
+dynaconf = "^3.1.7"
+flask-restx = "^0.5.1"
+
+[tool.poetry.dev-dependencies]
+jedi = "*"
+ipdb = "*"
+neovim = "*"
+pep8 = "*"
+flake8 = "*"
+pylint = "*"
+mypy = "*"
+isort = "*"
+autoflake = "*"
+sqlalchemy-stubs = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-watch = "*"
+pytest-sugar = "*"
+pytest-mock = "*"
+prospector = {version = "*", extras = ["with_with_pyroma", "with_vulture", "with_frosted", "with_mypy", "with_bandit"]}
+pytest-asyncio = "*"
+black = "*"
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+line_length = 160
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
