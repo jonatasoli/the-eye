@@ -1,17 +1,11 @@
-from flask import Flask
-from flask_restx import Api, Resource, fields
+from flask_restx import Resource, Namespace
 
-app = Flask(__name__)
-
-api = Api(app, version='1.0', title='The EYE API',
-    description='Get events API',
-)
-ns = api.namespace('api', description='events endpoint')
+ns = Namespace('api')
 
 @ns.route('/events')
 class Events(Resource):
 
-    def get(self, id):
+    def get(self):
         return "OK", 200
 
     def post(self, data):
