@@ -10,7 +10,9 @@ from flask import Flask
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, clear_mappers
 from tenacity import retry, stop_after_delay
-from src.events.config import settings
+
+
+from src.config import settings
 
 from src import create_app
 

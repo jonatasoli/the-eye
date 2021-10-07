@@ -1,6 +1,7 @@
 import pytest
 import httpx
-from src.events.config import settings
+
+from src.config import settings
 
 
 def test_index(test_app):
