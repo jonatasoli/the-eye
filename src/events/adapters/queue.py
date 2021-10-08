@@ -15,7 +15,8 @@ class Broker(AbstractBroker):
 
     def pub_event(self, event):
         try:
-            process_event.background_event_process.delay(event=event)
+            logger.info(event.to_json())
+            process_event.background_event_process.delay(event=event.to_json())
             logger.info("Pub message in a broker")
         except Exception as e:
             raise e

@@ -59,3 +59,15 @@ session_invalid_data = Event(
   ),
   timestamp=tomorrow.strftime("%Y-%m-%d %H:%M:%S.%f")
 )
+
+
+session_pub = Event(
+    session_id="e4055556-1137s4e4e-1111-222222222222",
+    category="page interaction",
+    name="pageview",
+    data=HostData(
+        host="www.consumeraffairs.com",
+        path="/",
+    ),
+    timestamp="2021-09-01 11:59:00.243860"
+)

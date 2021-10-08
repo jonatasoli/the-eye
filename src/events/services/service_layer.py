@@ -1,8 +1,9 @@
 from loguru import logger
 from datetime import datetime
-from .unit_of_work import AbstractUnitOfWork
+from .unit_of_work import AbstractUnitOfWork, SqlAlchemyUnitOfWork
 from src.events.domain.model import Event
 from src.events.adapters.queue import Broker
+from flask import current_app
 
 
 class ProcessEvents:

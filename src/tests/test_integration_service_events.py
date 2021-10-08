@@ -7,7 +7,7 @@ from src.events.adapters.repository import SqlAlchemyRepository
 from src.events.services.service_layer import ProcessEvents, ServiceEvents
 from src.events.adapters import repository, database, queue
 from .test_data import session_basic, session_element, session_form,\
-    session_invalid_data
+    session_invalid_data, session_pub
 
 
 class FakeBroker(queue.AbstractBroker):
@@ -65,7 +65,7 @@ def test_create_event_with_invalid_timestamp():
 
 
 def test_pub_celery():
-    event = session_basic
+    event = session_pub
     broker = queue.Broker()
     service = ServiceEvents()
     output = service.enqueue_event(event=event, enqueue=broker)
