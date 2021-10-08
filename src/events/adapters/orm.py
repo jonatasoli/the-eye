@@ -15,3 +15,16 @@ class Events(Base):
     name = Column(String)
     data = Column(JSON)
     timestamp = Column(DateTime)
+
+    def __repr__(self) -> str:
+        return f'session: {self.session_id}'
+
+    def to_dict(self) -> dict:
+        return dict(
+            session_id=self.session_id,
+            category=self.category,
+            name=self.name,
+            data=self.data,
+            timestamp=self.timestamp.strftime("%Y-%m-%d %H:%M:%S.%f")
+        )
+

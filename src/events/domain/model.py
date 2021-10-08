@@ -38,3 +38,12 @@ class Event():
     def get_format_timestamp():
         return "%Y-%m-%d %H:%M:%S.%f"
 
+    def to_json(self):
+        return dict(
+            session_id=self.session_id,
+            category=self.category,
+            name=self.name,
+            data=self.data,
+            timestamp=self.timestamp.strftime("%Y-%m-%d %H:%M:%S.%f")
+        )
+

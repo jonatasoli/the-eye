@@ -21,8 +21,7 @@ def test_create_event(postgres_db, uow_postgres):
     assert uow.events.list_session(
         "e2085be5-9137-4e4e-80b5-f1ffddc25423") is not None
 
-def create_multiple_events(uow_postgres):
-    uow=uow_postgres
+def create_multiple_events(uow):
     event_1 = session_basic
     event_2 = session_element
     event_3 = session_form
@@ -30,13 +29,20 @@ def create_multiple_events(uow_postgres):
     ProcessEvents.add_event(uow=uow, event=event_2)
     ProcessEvents.add_event(uow=uow, event=event_3)
 
-# def test_search_session_id():
-#     assert _session = session_basic
+def test_search_session_id(uow_postgres):
+    create_multiple_events(uow=uow_postgres)
+    _service_id="e2085be5-9137-4e4e-80b5-f1ffddc25423"
+    service = ServiceEvents()
+    _session = service.search_session(session_id=_service_id, uow=uow_postgres)
+    assert len(_session) == 4
 
-# def test_search_category():
-#     assert _session = session_elements
+def test_search_category(uow_postgres):
+    _category="form interaction"
+    service = ServiceEvents()
+    _session = service.search_category(category=_category, uow=uow_postgres)
+    assert _session[0] == session_form.to_json()
 
-# def test_search_timestamp():
+# def test_search_timestamp(uow_postgres):
 #     assert _session = session_form
 
 def test_create_event_with_invalid_timestamp():

@@ -40,14 +40,14 @@ class SqlAlchemyRepository(AbstractRepository):
 
     def list_session(self, session_id):
         smtm = select(Events).where(Events.session_id==session_id)
-        return self.session.execute(smtm).all()
+        return self.session.execute(smtm).scalars().all()
 
     def list_category(self, category):
         smtm = select(Events).where(Events.category==category)
-        return self.session.execute(smtm).all()
+        return self.session.execute(smtm).scalars().all()
 
     def list_timestamp_range(self, start_date, end_date):
         smtm = select(Events
         ).where(Events.timestamp >= start_date
         ).where(Events.timestamp <=end_date)
-        return self.session.execute(smtm).all()
+        return self.session.execute(smtm).scalars().all()
