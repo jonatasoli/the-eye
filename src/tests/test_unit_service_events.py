@@ -2,7 +2,8 @@ import pytest
 
 from src.events.services.unit_of_work import AbstractUnitOfWork
 from src.events.adapters.repository import AbstractRepository
-from src.events.services.service_layer import ServiceEvents
+from src.events.services.service_layer import ServiceEvents, ProcessEvents
+from src.events.adapters import queue
 from .test_data import session_basic
 
 
@@ -37,13 +38,26 @@ class FakeUnitOfWork(AbstractUnitOfWork):
         pass
 
 
+class FakeBroker(queue.AbstractBroker):
+    def pub_event(uow, event):
+        return True
+
+
 def test_create_event():
     uow = FakeUnitOfWork()
     db_event = session_basic
-    ServiceEvents.add_event(uow=uow, event=db_event)
+    ProcessEvents.add_event(uow=uow, event=db_event)
     assert uow.events.list_session(
         "e2085be5-9137-4e4e-80b5-f1ffddc25423") is not None
     assert uow.committed
+
+
+def test_queue_event():
+    broker = FakeBroker()
+    db_event = session_basic
+    service = ServiceEvents()
+    output = service.enqueue_event(event=db_event, enqueue=broker)
+    assert output == dict(message="Event enqueued")
 
 # def test_create_multiple_events():
 #     assert uow.commited == True

@@ -13,19 +13,16 @@ from sqlalchemy.orm import sessionmaker, clear_mappers
 
 from src.app import app
 from src.events.adapters.orm import Base
+from src.events.adapters import database
+from src.events.services.unit_of_work import SqlAlchemyUnitOfWork
 from src import create_app
 
 pytest.register_assert_rewrite("tests.e2e.api_client")
 
 
-# @pytest.fixture(scope="session", autouse=True)
-# def set_test_settings():
-#     app.config.FORCE_ENV_FOR_DYNACONF="testing"
-
 @pytest.fixture(scope="module")
 def test_app():
     app = create_app(FORCE_ENV_FOR_DYNACONF="testing")
-    # app.config.from_object("src.config.TestingConfig")
     with app.app_context():
         yield app  # testing happens here
 
@@ -36,3 +33,12 @@ def postgres_db():
     with engine.begin() as conn:
         Base.metadata.drop_all(bind=engine)
         Base.metadata.create_all(bind=engine)
+
+@pytest.fixture
+def uow_postgres():
+    return SqlAlchemyUnitOfWork(
+        session_factory=database.session_factory(
+            "postgresql://partyoudbuser:partyou123@172.15.0.2/testdb"
+        )
+    )
+
