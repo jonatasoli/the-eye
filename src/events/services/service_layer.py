@@ -13,8 +13,9 @@ class ServiceEvents:
     @staticmethod
     def add_event(uow: AbstractUnitOfWork, event: Event):
         with uow:
-            _event = uow.events.add(event)
+            import ipdb; ipdb.set_trace()
+            uow.events.add(event)
             uow.commit()
-            logger.info(f"user create with id {_event.session_id}")
+            logger.info(f"events create")
 
 

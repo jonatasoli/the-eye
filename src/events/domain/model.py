@@ -24,19 +24,23 @@ class HostData():
 class Event():
     def __init__(
         self,
-        session_id,
-        name,
-        category,
-        data,
-        timestamp,
+        session_id: str,
+        name: str,
+        category: str,
+        data: HostData,
+        timestamp: str,
     ):
-        self.format = "%Y-%m-%d %H:%M:%S.%f"
         self.session_id = session_id
         self.category = category
         self.name = name
-        self.data = data
-        self.timestamp = datetime.strptime(timestamp, self.format)
+        self.data = data.__dict__
+        self.timestamp = datetime.strptime(timestamp, self.get_format_timestamp())
 
     def check_timestamp(self):
         if self.timestamp >= datetime.now():
             raise InvalidTimestampException()
+
+    @staticmethod
+    def get_format_timestamp():
+        return "%Y-%m-%d %H:%M:%S.%f"
+

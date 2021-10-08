@@ -2,6 +2,7 @@ import abc
 from typing import List
 from sqlalchemy import select
 from src.events.domain.model import Event
+from .orm import Events
 
 
 class AbstractRepository(abc.ABC):
@@ -27,18 +28,26 @@ class SqlAlchemyRepository(AbstractRepository):
         self.session = session
 
     def add(self, event):
-        self.session.add(event)
+        self.session.add(
+            Events(
+                session_id = event.session_id,
+                category = event.category,
+                name = event.name,
+                data = event.data,
+                timestamp = event.timestamp
+            )
+        )
 
     def list_session(self, session_id):
-        smtm = select(Event).where(Event.session_id==session_id)
+        smtm = select(Events).where(Events.session_id==session_id)
         return self.session.execute(smtm).all()
 
     def list_category(self, category):
-        smtm = select(Event).where(Event.category==category)
+        smtm = select(Events).where(Events.category==category)
         return self.session.execute(smtm).all()
 
-    def list_timestamp(self, start_date, end_date):
-        smtm = select(Event
-        ).where(Event.timestamp >= start_date
-        ).where(Event.timestamp <=end_date)
+    def list_timestamp_range(self, start_date, end_date):
+        smtm = select(Events
+        ).where(Events.timestamp >= start_date
+        ).where(Events.timestamp <=end_date)
         return self.session.execute(smtm).all()

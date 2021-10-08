@@ -1,4 +1,6 @@
 [development]
+DB_DSN_URI = "postgresql://partyoudbuser:partyou123@172.15.0.2/eyedb"
+SQLALCHEMY_DATABASE_URI = "postgresql://partyoudbuser:partyou123@172.15.0.2/eyedb"
 FLASK_APP="app"
 API_URL="http://localhost:5000/"
 SERVER_NAME="localhost:5000"
@@ -21,3 +23,5 @@ DEBUG=true
 
 [testing]
 API_URL="http://localhost:5000/"
+SQLALCHEMY_DATABASE_URI = "postgresql://partyoudbuser:partyou123@172.15.0.2/testdb"
+DB_DSN_URI = "postgresql://partyoudbuser:partyou123@172.15.0.2/testdb"
