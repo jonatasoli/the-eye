@@ -62,3 +62,12 @@ def test_create_event_with_invalid_timestamp():
         service.enqueue_event(event=event_db, enqueue=broker)
 
     assert exc_info.typename == 'InvalidTimestampException'
+
+
+def test_pub_celery():
+    event = session_basic
+    broker = queue.Broker()
+    service = ServiceEvents()
+    output = service.enqueue_event(event=event, enqueue=broker)
+    assert output == dict(message="Event enqueued")
+

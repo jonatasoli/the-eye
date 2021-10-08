@@ -15,7 +15,7 @@ from src.app import app
 from src.events.adapters.orm import Base
 from src.events.adapters import database
 from src.events.services.unit_of_work import SqlAlchemyUnitOfWork
-from src import create_app
+from src.app import create_app
 
 pytest.register_assert_rewrite("tests.e2e.api_client")
 
