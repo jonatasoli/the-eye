@@ -1,4 +1,5 @@
 from loguru import logger
+from datetime import datetime
 from .unit_of_work import AbstractUnitOfWork
 from src.events.domain.model import Event
 from src.events.adapters.queue import Broker
@@ -30,6 +31,13 @@ class ServiceEvents:
     def search_category(self, category: str, uow: AbstractUnitOfWork):
         with uow:
             db_data = uow.events.list_category(category)
+            events = [row.to_dict() for row in db_data]
+
+        return events
+
+    def search_data_range(self, start_date: datetime, end_date: datetime, uow: AbstractUnitOfWork):
+        with uow:
+            db_data = uow.events.list_timestamp_range(start_date, end_date)
             events = [row.to_dict() for row in db_data]
 
         return events

@@ -1,4 +1,5 @@
 import pytest
+from datetime import datetime
 
 from src.events.domain.model import InvalidTimestampException
 from src.events.services.unit_of_work import SqlAlchemyUnitOfWork
@@ -42,8 +43,16 @@ def test_search_category(uow_postgres):
     _session = service.search_category(category=_category, uow=uow_postgres)
     assert _session[0] == session_form.to_json()
 
-# def test_search_timestamp(uow_postgres):
-#     assert _session = session_form
+def test_search_timestamp(uow_postgres):
+    _start_date = datetime(2021,1,1,9,25,00)
+    _end_date = datetime(2021,1,1,9,26,00)
+    service = ServiceEvents()
+    _session = service.search_data_range(
+        start_date=_start_date,
+        end_date=_end_date,
+        uow=uow_postgres
+    )
+    assert _session[0] == session_element.to_json()
 
 def test_create_event_with_invalid_timestamp():
     event_db = session_invalid_data
