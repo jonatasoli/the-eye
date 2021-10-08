@@ -1,4 +1,4 @@
-from src.events.domain.model import Event, HostData, FormData
+from src.events.domain.model import Event, HostData
 from datetime import datetime, timedelta
 
 
@@ -36,7 +36,7 @@ session_form = Event(
   data=HostData(
     host="www.consumeraffairs.com",
     path="/",
-    form=FormData(
+    form=dict(
       first_name="John",
       last_name="Doe"
     )
@@ -52,7 +52,7 @@ session_invalid_data = Event(
   data=HostData(
     host="www.consumeraffairs.com",
     path="/",
-    form=FormData(
+    form=dict(
       first_name="John",
       last_name="Doe"
     )

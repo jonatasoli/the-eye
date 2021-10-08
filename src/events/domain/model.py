@@ -8,17 +8,11 @@ class InvalidTimestampException(Exception):
 
 
 @dataclass
-class FormData():
-    first_name: str
-    last_name: str
-
-
-@dataclass
 class HostData():
     host: str
     path: str
     element: Optional[str] = None
-    form: Optional[FormData] = None
+    form: Optional[dict] = None
 
 
 class Event():
