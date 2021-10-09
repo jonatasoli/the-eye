@@ -32,6 +32,11 @@ pytest -s -m "not container slow broker"
 cd src
 flask db upgrade
 ```
+- Run docker-compose file to use rabbitmq
+```
+docker network create the-eye_eye
+docker-compose up -d
+```
 - Run app
 ```
 cd src
@@ -40,10 +45,6 @@ flask run
 - Run celery run sript in root directory
 ```
 ./start-celery.sh
-```
-- Optional Run docker-compose file to use rabbitmq
-```
-docker-compose up -d
 ```
 
 ## Show open api
@@ -55,6 +56,7 @@ http://localhost:5000/
 ### with docker
 - Run docker-compose file
 ```
+docker network create the-eye_eye
 docker-compose up -d
 ```
 - Run Migrations (need eyedb in postgres)
