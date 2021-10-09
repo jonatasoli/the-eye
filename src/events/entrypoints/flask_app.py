@@ -10,25 +10,12 @@ from src.events.adapters.api_model import post_event, event_response, \
 
 
 from src.events.domain.model import Event, HostData
+from src.events.services import service_layer, unit_of_work
+from src.events.adapters.queue import AbstractBroker, Broker
 
 
-# api = Api(version="1.0", title="Events API", doc="/doc")
-# ns = Namespace('api')
-# api.add_namespace(ns, path="/api")
 blueprint_event = Blueprint('api', __name__, url_prefix='/api/1') # This blueprint is not used
 ns = api.namespace('api')
-
-
-def get_service_events():
-    from src.events.services import service_layer, unit_of_work
-    return service_layer.ServiceEvents()
-def get_uow():
-    from src.events.services import service_layer, unit_of_work
-    return unit_of_work.SqlAlchemyUnitOfWork()
-
-def get_broker():
-    from src.events.adapters.queue import AbstractBroker, Broker
-    return Broker()
 
 
 @ns.route('/events')
@@ -40,8 +27,8 @@ class Events(Resource):
     @ns.marshal_with(event_response, code=204)
     def post(
         self,
-        service=get_service_events(),
-        broker=get_broker()
+        service=service_layer.ServiceEvents(),
+        broker:AbstractBroker=Broker()
         ):
         try:
             input_data = api.payload
@@ -70,8 +57,8 @@ class SearchEvents(Resource):
     @ns.expect(search_event)
     def post(
         self,
-        service=get_service_events(),
-        uow=get_uow()
+        service=service_layer.ServiceEvents(),
+        uow=unit_of_work.SqlAlchemyUnitOfWork()
     ):
         try:
             input_data = api.payload

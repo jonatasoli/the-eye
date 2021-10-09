@@ -5,18 +5,25 @@ services:
   app-service:
     build:
       context: .
-      ports:
+    ports:
       - 5000:5000
     volumes:
       - ./src:/src:Z
+    depends_on:
+      - database
+      - rabbitmq
+    tty: true
     command: >
       sh -c 'flask run --host 0.0.0.0 --port 5000'
+    networks:
+      vpcbr:
+        ipv4_address: 172.18.0.8
     environment:
       - DOCKER_CONFIG=True
       - PARTYOU_CONFIG=docker_config_local_no_pass
       - FLASK_ENV="development"
-      - FLASK_APP="app"
-      - SQLALCHEMY_DATABASE_URI = "postgresql://partyoudbuser:partyou123@172.15.0.2/eyedb"
+      - FLASK_APP="app:create_app()"
+      - SQLALCHEMY_DATABASE_URI=postgresql://myuser:mypass@database/eyedb
       - API_URL="http://localhost:5000/"
       - SERVER_NAME="localhost:5000"
       - INCLUDE_SCHEMAS=true
@@ -26,21 +33,49 @@ services:
       - RECORD_QUERIES=true
       - SQLALCHEMY_ECHO=false
       - DEBUG=true
-      - CELERY_BROKER_URL='amqp://brokeruser:brokerpass@172.15.0.7//'
-      - CELERY_RESULT_BACKEND='amqp://brokeruser:brokerpass@172.15.0.7//'
+      - CELERY_BROKER_URL='amqp://brokeruser:brokerpass@rabbitmq//'
+      - CELERY_RESULT_BACKEND='amqp://brokeruser:brokerpass@rabbitmq//'
   celery:
     build:
       context: .
+      dockerfile: celeryworker.dockerfile
     volumes:
       - .:/src:Z
     command: >
       sh -c './start-celery.sh'
+    networks:
+      vpcbr:
+        ipv4_address: 172.18.0.9
+    depends_on:
+      - database
+      - rabbitmq
+    tty: true
+    environment:
+      - DOCKER_CONFIG=True
+      - PARTYOU_CONFIG=docker_config_local_no_pass
+      - FLASK_ENV="development"
+      - FLASK_APP="app:create_app()"
+      - SQLALCHEMY_DATABASE_URI=postgresql://myuser:mypass@database/eyedb
+      - API_URL="http://localhost:5000/"
+      - SERVER_NAME="localhost:5000"
+      - INCLUDE_SCHEMAS=true
+      - POOL_SIZE=30
+      - POOL_TIMEOUT=15
+      - TRACK_MODIFICATIONS=false
+      - RECORD_QUERIES=true
+      - SQLALCHEMY_ECHO=false
+      - DEBUG=true
+      - CELERY_BROKER_URL='amqp://brokeruser:brokerpass@rabbitmq//'
+      - CELERY_RESULT_BACKEND='amqp://brokeruser:brokerpass@rabbitmq//'
 
   database:
     image: postgres:11
     restart: always
     ports:
       - 5432:5432
+    networks:
+      vpcbr:
+        ipv4_address: 172.18.0.3
     volumes:
       - "./postgres_restore:/restore"
       - "./postgres_data:/var/lib/postgresql/data/pgdata"
@@ -54,6 +89,18 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=brokeruser
       - RABBITMQ_DEFAULT_PASS=brokerpass
+    networks:
+      vpcbr:
+        ipv4_address: 172.18.0.2
     ports:
       - "5672:5672"
       - "15672:15672"
+
+
+networks:
+  eye:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 172.18.0.0/16
+         gateway: 172.18.0.1

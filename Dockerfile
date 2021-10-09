@@ -12,7 +12,7 @@ COPY ./requirements.txt ./requirements.txt
 WORKDIR /src/
 
 
-COPY ./app /src
+COPY ./src /src
 
 COPY requirements.txt .
 RUN pip install pip --upgrade

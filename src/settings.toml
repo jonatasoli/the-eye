@@ -1,7 +1,7 @@
 [development]
 FLASK_ENV="development"
 FLASK_APP="app"
-SQLALCHEMY_DATABASE_URI = "postgresql://partyoudbuser:partyou123@172.15.0.2/eyedb"
+SQLALCHEMY_DATABASE_URI = "postgresql://myuser:mypass@172.18.0.3/eyedb"
 API_URL="http://localhost:5000/"
 SERVER_NAME="localhost:5000"
 INCLUDE_SCHEMAS=true
@@ -11,11 +11,11 @@ TRACK_MODIFICATIONS=false
 RECORD_QUERIES=true
 SQLALCHEMY_ECHO=false
 DEBUG=true
-CELERY_BROKER_URL='amqp://brokeruser:brokerpass@172.15.0.7//'
-CELERY_RESULT_BACKEND='amqp://brokeruser:brokerpass@172.15.0.7//'
+CELERY_BROKER_URL='amqp://brokeruser:brokerpass@172.18.0.2//'
+CELERY_RESULT_BACKEND='amqp://brokeruser:brokerpass@172.18.0.2//'
 
 [testing]
 API_URL="http://localhost:5000/"
-SQLALCHEMY_DATABASE_URI = "postgresql://partyoudbuser:partyou123@172.15.0.2/testdb"
-CELERY_BROKER_URL='pyamqp://brokeruser:brokerpass@172.15.0.7//'
-CELERY_RESULT_BACKEND='pyamqp://brokeruser:brokerpass@172.15.0.7//'
+SQLALCHEMY_DATABASE_URI = "postgresql://partyoudbuser:partyou123@172.18.0.3/testdb"
+CELERY_BROKER_URL='pyamqp://brokeruser:brokerpass@172.18.0.2//'
+CELERY_RESULT_BACKEND='pyamqp://brokeruser:brokerpass@172.18.0.2//'

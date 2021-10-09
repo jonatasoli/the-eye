@@ -134,3 +134,7 @@ dmypy.json
 #celery logs
 *.pid
 *.log
+
+#postgres
+postgres_data
+postgres_restore

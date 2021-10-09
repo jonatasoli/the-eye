@@ -1,0 +1,13 @@
+FLASK_ENV=development
+FLASK_APP=app:create_app()
+SQLALCHEMY_DATABASE_URI=postgresql://partyoudbuser:partyou123@172.15.0.2/eyedb
+API_URL=http://localhost:5000/
+SERVER_NAME=localhost:5000
+INCLUDE_SCHEMAS=True
+POOL_SIZE=30
+POOL_TIMEOUT=15
+RECORD_QUERIES=True
+SQLALCHEMY_ECHO=False
+DEBUG=True
+CELERY_BROKER_URL=amqp://brokeruser:brokerpass@172.15.0.7//
+CELERY_RESULT_BACKEND=amqp://brokeruser:brokerpass@172.15.0.7//

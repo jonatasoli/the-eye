@@ -15,10 +15,6 @@ from src.app import app
 from src.events.adapters.orm import Base
 from src.events.adapters import database
 from src.events.services.unit_of_work import SqlAlchemyUnitOfWork
-from src.app import create_app
-
-pytest.register_assert_rewrite("tests.e2e.api_client")
-
 
 @pytest.fixture(scope="module")
 def test_app():
@@ -38,7 +34,7 @@ def postgres_db():
 def uow_postgres():
     return SqlAlchemyUnitOfWork(
         session_factory=database.session_factory(
-            "postgresql://partyoudbuser:partyou123@172.15.0.2/testdb"
+            "postgresql://partyoudbuser:partyou123@172.18.0.3/testdb"
         )
     )
 

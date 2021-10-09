@@ -15,6 +15,7 @@ def background_event_process(
     ):
 
     try:
+        logger.info("start task")
         _data = event.get('data')
         _event = Event(
             session_id = event.get('session_id'),

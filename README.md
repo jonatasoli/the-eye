@@ -17,10 +17,15 @@ poetry install
 ```
 poetry shell
 ```
+- User env-sample file to start app requirements
+```
+cd src
+cp contrib/env-sample .env
+```
 - Run tests without docker-container and slow tests (need testdb in postgres)
 ```
 cd src
-pytest -s -m "not container slow"
+pytest -s -m "not container slow broker"
 ```
 - Run migrations (need eyedb in postgres)
 ```
