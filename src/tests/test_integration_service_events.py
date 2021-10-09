@@ -64,6 +64,7 @@ def test_create_event_with_invalid_timestamp():
     assert exc_info.typename == 'InvalidTimestampException'
 
 
+@pytest.mark.broker_only
 def test_pub_celery():
     event = session_pub
     broker = queue.Broker()

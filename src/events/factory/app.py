@@ -23,7 +23,9 @@ def create_app(**config):
     ma = Marshmallow(app)
 
     # register api
-    from src.events.entrypoints import api
+    from src.events.entrypoints.flask_app import blueprint_event
+    from src.events.adapters.rest_lib import api
+    app.register_blueprint(blueprint_event, url_prefix="/api")
     api.init_app(app)
 
     #celery

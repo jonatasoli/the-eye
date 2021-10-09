@@ -1,6 +1,6 @@
 import abc
 from typing import List
-from sqlalchemy import select
+from sqlalchemy import select, between
 from src.events.domain.model import Event
 from .orm import Events
 
@@ -48,6 +48,5 @@ class SqlAlchemyRepository(AbstractRepository):
 
     def list_timestamp_range(self, start_date, end_date):
         smtm = select(Events
-        ).where(Events.timestamp >= start_date
-        ).where(Events.timestamp <=end_date)
+        ).where(between(Events.timestamp, start_date,end_date))
         return self.session.execute(smtm).scalars().all()
