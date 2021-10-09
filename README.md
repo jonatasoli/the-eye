@@ -1,3 +1,73 @@
+## Init project
+- The project can be initialized with docker and python-poetry
+- To add new libs need add with python-poetry to create deterministic version of lib
+- Docker only install requirements.txt, so always to add new lib, run export requirements with python-poetry
+```
+poetry export -f requirements.txt --output requirements.txt
+# with develop dependencies
+poetry export -f requirements.txt --output requirements-dev.txt --dev --without-hashes
+```
+
+### with python-poetry
+- Run poetry install
+```
+poetry install
+```
+- Run poetry shell
+```
+poetry shell
+```
+- Run tests without docker-container and slow tests (need testdb in postgres)
+```
+cd src
+pytest -s -m "not container slow"
+```
+- Run migrations (need eyedb in postgres)
+```
+cd src
+flask db upgrade
+```
+- Run app
+```
+cd src
+flask run
+```
+- Run celery run sript in root directory
+```
+./start-celery.sh
+```
+- Optional Run docker-compose file to use rabbitmq
+```
+docker-compose up -d
+```
+
+## Show open api
+- Enter in / directory
+```
+http://localhost:5000/
+```
+
+### with docker
+- Run docker-compose file
+```
+docker-compose up -d
+```
+- Run Migrations (need eyedb in postgres)
+```
+docker exec <service-app-container-name> bash -c "flask db upgrade"
+```
+
+- Run tests (need testdb in postgres)
+```
+docker exec <service-app-container-name> bash -c "pytest -s"
+```
+
+## Show open api
+- Enter in / directory
+```
+http://localhost:5000/
+```
+
 # The Eye
 
 ## Story

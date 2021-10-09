@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+
+  app-service:
+    build:
+      context: .
+      ports:
+      - 5000:5000
+    volumes:
+      - ./src:/src:Z
+    command: >
+      sh -c 'flask run --host 0.0.0.0 --port 5000'
+    environment:
+      - DOCKER_CONFIG=True
+      - PARTYOU_CONFIG=docker_config_local_no_pass
+      - FLASK_ENV="development"
+      - FLASK_APP="app"
+      - SQLALCHEMY_DATABASE_URI = "postgresql://partyoudbuser:partyou123@172.15.0.2/eyedb"
+      - API_URL="http://localhost:5000/"
+      - SERVER_NAME="localhost:5000"
+      - INCLUDE_SCHEMAS=true
+      - POOL_SIZE=30
+      - POOL_TIMEOUT=15
+      - TRACK_MODIFICATIONS=false
+      - RECORD_QUERIES=true
+      - SQLALCHEMY_ECHO=false
+      - DEBUG=true
+      - CELERY_BROKER_URL='amqp://brokeruser:brokerpass@172.15.0.7//'
+      - CELERY_RESULT_BACKEND='amqp://brokeruser:brokerpass@172.15.0.7//'
+  celery:
+    build:
+      context: .
+    volumes:
+      - .:/src:Z
+    command: >
+      sh -c './start-celery.sh'
+
+  database:
+    image: postgres:11
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - "./postgres_restore:/restore"
+      - "./postgres_data:/var/lib/postgresql/data/pgdata"
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypass
+      - PGDATA=/var/lib/postgresql/data/pgdata
+
+  rabbitmq:
+    image: rabbitmq:3.7.15-management-alpine
+    environment:
+      - RABBITMQ_DEFAULT_USER=brokeruser
+      - RABBITMQ_DEFAULT_PASS=brokerpass
+    ports:
+      - "5672:5672"
+      - "15672:15672"
