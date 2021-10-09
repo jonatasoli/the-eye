@@ -9,7 +9,6 @@ from flask import current_app
 class ProcessEvents:
     @staticmethod
     def add_event(event: Event, uow: AbstractUnitOfWork):
-        logger.info(f"UOW: {uow.session_factory}")
         with uow:
             uow.events.add(event)
             uow.commit()

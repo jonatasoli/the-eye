@@ -11,10 +11,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, clear_mappers
 
 
-from src.app import app
+from src.events.factory.app import create_app
 from src.events.adapters.orm import Base
 from src.events.adapters import database
 from src.events.services.unit_of_work import SqlAlchemyUnitOfWork
+
 
 @pytest.fixture(scope="module")
 def test_app():
@@ -25,7 +26,7 @@ def test_app():
 
 @pytest.fixture
 def postgres_db():
-    engine = create_engine("postgresql://partyoudbuser:partyou123@172.15.0.2/testdb")
+    engine = create_engine("postgresql://myuser:mypass@172.18.0.3/testdb")
     with engine.begin() as conn:
         Base.metadata.drop_all(bind=engine)
         Base.metadata.create_all(bind=engine)
@@ -34,7 +35,7 @@ def postgres_db():
 def uow_postgres():
     return SqlAlchemyUnitOfWork(
         session_factory=database.session_factory(
-            "postgresql://partyoudbuser:partyou123@172.18.0.3/testdb"
+            "postgresql://myuser:mypass@172.18.0.3/testdb"
         )
     )
 
