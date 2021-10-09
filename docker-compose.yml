@@ -31,16 +31,20 @@ services:
       - RECORD_QUERIES=true
       - SQLALCHEMY_ECHO=false
       - DEBUG=true
-      - CELERY_BROKER_URL='amqp://brokeruser:brokerpass@rabbitmq//'
-      - CELERY_RESULT_BACKEND='amqp://brokeruser:brokerpass@rabbitmq//'
+      - CELERY_BROKER_URL=amqp://brokeruser:brokerpass@rabbitmq//
+      - CELERY_RESULT_BACKEND=amqp://brokeruser:brokerpass@rabbitmq//
   celery:
     build:
       context: .
       dockerfile: ./celeryworker.dockerfile
-    volumes:
-      - .:/src:Z
-    command: >
-      sh -c './start-celery.sh'
+    command:
+      [
+        "celery",
+        "-A",
+        "src.celery_worker.celery_obj",
+        "worker",
+        "--loglevel=info",
+      ]
     networks:
       eye:
         ipv4_address: 172.18.0.9
@@ -64,8 +68,8 @@ services:
       - RECORD_QUERIES=true
       - SQLALCHEMY_ECHO=false
       - DEBUG=true
-      - CELERY_BROKER_URL='amqp://brokeruser:brokerpass@rabbitmq//'
-      - CELERY_RESULT_BACKEND='amqp://brokeruser:brokerpass@rabbitmq//'
+      - CELERY_BROKER_URL=amqp://brokeruser:brokerpass@rabbitmq//
+      - CELERY_RESULT_BACKEND=amqp://brokeruser:brokerpass@rabbitmq//
 
   database:
     image: postgres:11
